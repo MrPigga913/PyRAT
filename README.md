@@ -27,4 +27,6 @@ Contributing
 If you have any suggestions or improvements, feel free to open an issue or submit a pull request. Your contributions are welcome and appreciated!
 
 Acknowledgments
-Thank you for checking out my project!
+Thank you for checking out my project! 
+
+Its for Windows only btw!
