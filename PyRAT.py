@@ -27,7 +27,7 @@ class PyRAT:
 
     def __init__(self, master):
         self.root = master
-        self.root.title("PyRAT by ZeyTroX")
+        self.root.title("PyRAT")
         self.root.iconbitmap("Snake.ico")
         self.root.geometry("1080x730")
         self.root.configure(bg="black")
