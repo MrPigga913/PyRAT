@@ -389,6 +389,10 @@ class PyRAT:
         self.B_shutdown.configure(state="normal", text="Shutdown")
         self.B_screenshot.configure(state="normal", text="Screenshot")
         self.Error_Label.configure(text="")
+        self.Shell_Entry.place_forget()
+        self.Shell_Label.place_forget()
+        self.Kill_Entry.place_forget()
+        self.Kill_Label.place_forget()
         self.showing_png = False
         self.showing_snap = False
         self.sharingScreen = False
