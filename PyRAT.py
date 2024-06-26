@@ -64,9 +64,9 @@ class PyRAT:
         self.B_reset = CTkButton(self.Tab.tab("Control Panel"), bg_color="#0A1209", text="Restart", text_color="lime", fg_color="black", hover_color="grey", command=self.restart)
         self.B_kill = CTkButton(self.Tab.tab("Control Panel"), bg_color="#0A1209", text="Kill PID", text_color="lime", fg_color="black", hover_color="grey", command=self.toggle_kill)
 
-        self.Shell_Entry = CTkEntry(self.Tab.tab("Control Panel"), width=140, bg_color="#438A3B", text_color="white", font=self.small_font, state="disabled")
+        self.Shell_Entry = CTkEntry(self.Tab.tab("Control Panel"), width=140, bg_color="#101A10", text_color="white", font=self.small_font, state="disabled")
         self.Shell_Label = CTkLabel(self.Tab.tab("Control Panel"), text_color="white", bg_color="#101A10", text="Shell:", font=self.small_font)
-        self.Kill_Entry = CTkEntry(self.Tab.tab("Control Panel"), width=140, bg_color="#438A3B", text_color="white", font=self.small_font, state="disabled")
+        self.Kill_Entry = CTkEntry(self.Tab.tab("Control Panel"), width=140, bg_color="#101A10", text_color="white", font=self.small_font, state="disabled")
         self.Kill_Label = CTkLabel(self.Tab.tab("Control Panel"), text_color="white", bg_color="#101A10", text="PID:",font=self.small_font)
 
         self.Shell_Entry.bind("<Return>", self.shell)
@@ -91,7 +91,7 @@ class PyRAT:
         self.Error_Label = CTkLabel(self.root, text_color="red", bg_color="#101A10", text="", font=self.small_font)
 
         # Server
-        self.Port_Entry = CTkEntry(self.Tab.tab("Builder/Listener"), height=60, width=988, bg_color="#438A3B", text_color="green", font=self.big_font)
+        self.Port_Entry = CTkEntry(self.Tab.tab("Builder/Listener"), height=60, width=988, bg_color="#101A10", text_color="green", font=self.big_font)
         self.Listen_Label = CTkLabel(self.Tab.tab("Builder/Listener"), text_color="lime", bg_color="#101A10", text="", font=self.big_font)
         self.Listen_Label_info = CTkLabel(self.Tab.tab("Builder/Listener"), text_color="white", bg_color="#101A10", text="Port:", font=self.big_font)
         self.Listener_Label = CTkLabel(self.Tab.tab("Builder/Listener"), text_color="lime", bg_color="#101A10", text="PyRAT Listener:", font=self.very_big_font)
@@ -100,8 +100,8 @@ class PyRAT:
         # Builder
         self.Build_Label = CTkLabel(self.Tab.tab("Builder/Listener"), text_color="lime", bg_color="#101A10", text="PyRAT Builder:", font=self.very_big_font)
         self.B_build = CTkButton(self.Tab.tab("Builder/Listener"), bg_color="#0A1209", text="Build", text_color="lime", fg_color="black", hover_color="grey", command=self.builder, width=988, font=self.big_font, height=60)
-        self.Build_port = CTkEntry(self.Tab.tab("Builder/Listener"), width=988, bg_color="#438A3B", text_color="green", font=self.big_font, height=60)
-        self.Build_ip = CTkEntry(self.Tab.tab("Builder/Listener"), width=988, bg_color="#438A3B", text_color="green", font=self.big_font, height=60)
+        self.Build_port = CTkEntry(self.Tab.tab("Builder/Listener"), width=988, bg_color="#101A10", text_color="green", font=self.big_font, height=60)
+        self.Build_ip = CTkEntry(self.Tab.tab("Builder/Listener"), width=988, bg_color="#101A10", text_color="green", font=self.big_font, height=60)
         self.Build_Label_ip = CTkLabel(self.Tab.tab("Builder/Listener"), text_color="white", bg_color="#101A10", text="LHost:", font=self.big_font)
         self.Build_Label_port = CTkLabel(self.Tab.tab("Builder/Listener"), text_color="white", bg_color="#101A10",text="LPort:", font=self.big_font)
         self.tren1 = CTkLabel(self.Tab.tab("Builder/Listener"), text_color="green", bg_color="#101A10", text="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", font=self.big_font)
