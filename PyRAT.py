@@ -30,7 +30,7 @@ server_thread = None
 
 class PyRAT:
     def __init__(self, master):
-        self.img = CTkImage(Image.open(r".\Snake.ico"), size=(120, 120))
+        self.img = CTkImage(Image.open(r".\PyRAT.ico"), size=(120, 120))
 
         self.very_big_font = CTkFont(family="Helvetica", size=30, weight="bold")
         self.big_font = CTkFont(family="Helvetica", size=20, weight="bold")
@@ -38,7 +38,7 @@ class PyRAT:
 
         self.root = master
         self.root.title("PyRAT")
-        self.root.iconbitmap(r".\Snake.ico")
+        self.root.iconbitmap(r".\PyRAT.ico")
         self.root.geometry("1080x780")
         self.root.resizable(height=False, width=False)
         self.root.configure(fg_color="black")
