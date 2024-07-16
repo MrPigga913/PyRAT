@@ -17,6 +17,9 @@ To get started with PyRAT, follow these steps:
   Navigate to the project directory:
   cd PyRAT
 
+  Install the requirements:
+  pip3 install -r requirements.txt
+  
   To run PyRAT, use the following command:
   python PyRAT.py
 
