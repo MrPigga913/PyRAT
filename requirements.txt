@@ -1,0 +1,9 @@
+customtkinter
+opencv-python
+pypiwin32
+pillow
+pynput
+win10toast
+pyaudio
+nuitka
+numpy
