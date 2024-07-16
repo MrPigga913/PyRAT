@@ -1,18 +1,8 @@
-import os
+
 
 from customtkinter import *
 import subprocess
 import threading
-
-
-def requirements():
-    subprocess.run("pip install customtkinter opencv-python pillow pynput win10toast pyaudio nuitka pypiwin32 numpy",
-                   shell=True)
-    subprocess.run("python -m pip install -U nuitka", shell=True)
-
-
-threading.Thread(target=requirements).start()
-
 import tkinter as tk
 from tkinter import filedialog
 import socket
@@ -22,6 +12,7 @@ import numpy as np
 from PIL import Image
 from win10toast import ToastNotifier
 import pyaudio
+import os
 
 IP = "0.0.0.0"
 listen = False
