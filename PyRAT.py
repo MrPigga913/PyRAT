@@ -1,5 +1,3 @@
-
-
 from customtkinter import *
 import subprocess
 import threading
