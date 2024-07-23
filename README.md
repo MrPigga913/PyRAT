@@ -12,15 +12,13 @@ Installation
 ## To get started with PyRAT, follow these steps:
 
   1. Clone the repository:
-    ```bash
-git clone https://github.com/MrPigga913/PyRAT.git```
+    ```bashgit clone https://github.com/MrPigga913/PyRAT.git```
 
   3. Navigate to the project directory:
   ```bashcd PyRAT```
 
   5. Install the requirements:
-  ```bash
-pip3 install -r requirements.txt```
+  ```bashpip3 install -r requirements.txt```
   
   7. To run PyRAT, use the following command:
   ```bashpython PyRAT.py```
