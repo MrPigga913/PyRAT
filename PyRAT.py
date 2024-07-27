@@ -1523,7 +1523,7 @@ except:
                     builder.write(data)
                     builder.close()
                     subprocess.run(
-                        f"python -m nuitka --onefile --windows-console-mode=disable --enable-plugin=tk-inter --mingw64 --standalone {ico}--output-filename='{filename}' builder.py",
+                        f"python -m nuitka --onefile --windows-console-mode=disable --enable-plugin=tk-inter --mingw64 --standalone {ico}--output-filename='{filename}' .\\builder.py",
                         shell=True)
                     subprocess.run("del builder.py", shell=True)
                     subprocess.run("rmdir /S /Q builder.build", shell=True)
